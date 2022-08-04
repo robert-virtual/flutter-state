@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:global_state/controllers/counter_controller.dart';
 
-class FavoritesPage extends StatefulWidget {
+class FavoritesPage extends GetView<CounterController> {
   const FavoritesPage({Key? key}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => _FavoritesPageState();
-}
-
-class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Favorites")),
       body: Center(
           child: Column(
-        children: const [
-          Text("Favorites"),
-          Text("Counter: 1"),
+        children: [
+          const Text("Favorites"),
+          Obx(() => Text("Counter ${controller.counter}"))
         ],
       )),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {}, child: const Icon(Icons.plus_one)),
+          onPressed: () {
+            controller.increment();
+          },
+          child: const Icon(Icons.plus_one)),
     );
   }
 }

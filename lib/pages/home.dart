@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:global_state/controllers/counter_controller.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends GetView<CounterController> {
   const HomePage({Key? key}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,17 +14,20 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text("Home"),
-            const Text("Counter: 1"),
+            Obx(() => Text("Counter ${controller.counter}")),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, "/favorites");
+                  Get.toNamed("/favorites");
                 },
                 child: const Text("favorites"))
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {}, child: const Icon(Icons.plus_one)),
+          onPressed: () {
+            controller.increment();
+          },
+          child: const Icon(Icons.plus_one)),
     );
   }
 }
