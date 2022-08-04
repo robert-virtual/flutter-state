@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:global_state/providers/counter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:global_state/counter_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,27 +14,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Home")),
-      body: StreamBuilder(
-          stream: counterService.stream$,
-          builder: (context, snapshot) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Home"),
-                  Text("Counter: ${snapshot.data}"),
-                  ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, "/favorites");
-                      },
-                      child: const Text("favorites"))
-                ],
-              ),
-            );
-          }),
+      body: BlocBuilder<CounterCubit, int>(
+        builder: (context, count) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text("Home"),
+              Text("Counter: $count"),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/favorites");
+                  },
+                  child: const Text("favorites"))
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            counterService.increment();
+            context.read<CounterCubit>().increment();
           },
           child: const Icon(Icons.plus_one)),
     );

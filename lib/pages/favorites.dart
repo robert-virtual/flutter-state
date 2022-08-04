@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:global_state/providers/counter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:global_state/counter_cubit.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key}) : super(key: key);
@@ -13,20 +14,18 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Favorites")),
-      body: StreamBuilder(
-          stream: counterService.stream$,
-          builder: (context, snapshot) {
-            return Center(
-                child: Column(
-              children: [
-                const Text("Favorites"),
-                Text("Counter: ${snapshot.data}"),
-              ],
-            ));
-          }),
+      body: BlocBuilder<CounterCubit, int>(
+        builder: (context, count) => Center(
+            child: Column(
+          children: [
+            const Text("Favorites"),
+            Text("Counter: $count"),
+          ],
+        )),
+      ),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            counterService.increment();
+            context.read<CounterCubit>().increment();
           },
           child: const Icon(Icons.plus_one)),
     );
