@@ -13,18 +13,20 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Favorites")),
-      body: Center(
-          child: Column(
-        children: [
-          const Text("Favorites"),
-          Text("Counter: ${counter.value}"),
-        ],
-      )),
+      body: StreamBuilder(
+          stream: counterService.stream$,
+          builder: (context, snapshot) {
+            return Center(
+                child: Column(
+              children: [
+                const Text("Favorites"),
+                Text("Counter: ${snapshot.data}"),
+              ],
+            ));
+          }),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            setState(() {
-              counter.value++;
-            });
+            counterService.increment();
           },
           child: const Icon(Icons.plus_one)),
     );

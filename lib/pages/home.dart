@@ -13,25 +13,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Home")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Home"),
-            Text("Counter: ${counter.value}"),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "/favorites");
-                },
-                child: const Text("favorites"))
-          ],
-        ),
-      ),
+      body: StreamBuilder(
+          stream: counterService.stream$,
+          builder: (context, snapshot) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Home"),
+                  Text("Counter: ${snapshot.data}"),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/favorites");
+                      },
+                      child: const Text("favorites"))
+                ],
+              ),
+            );
+          }),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            setState(() {
-              counter.value++;
-            });
+            counterService.increment();
           },
           child: const Icon(Icons.plus_one)),
     );
