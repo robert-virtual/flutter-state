@@ -11,6 +11,7 @@ class FavoritesPage extends GetView<CounterController> {
       appBar: AppBar(title: const Text("Favorites")),
       body: Center(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text("Favorites"),
           Obx(() => Text("Counter ${controller.counter}"))
